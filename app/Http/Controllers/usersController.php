@@ -20,11 +20,11 @@ class usersController extends Controller
         return response()->json($users);
     }
 
-    public function create(request $request){
+    public function create($request){
         $users = new users();
-
-        $users->id = $request->id;
-        $users->name = $request->name;
+        //return $request;
+        //$users->id = $request->id;
+        $users->name = (string) $request;
 
         $users->save();
 

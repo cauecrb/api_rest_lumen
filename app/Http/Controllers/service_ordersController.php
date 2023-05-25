@@ -33,10 +33,9 @@ class service_ordersController extends Controller
         $serviceorders->exitDateTime = $request->exitDateTime;
         $serviceorders->priceType = $request->priceType;
         $serviceorders->price = $request->price;
-
-        $serviceorders->userId = (new usersController())->create($request->Id);
-
-       // $serviceorders->userId = $request->userId;
+        $userId = (new usersController())->create($request->userId);
+        $serviceorders->userId = $userId->original;
+        //return $serviceorders;
 
         /**
          *  verificação se é uma data valida, caso nao retorna uma mensagem de erro
@@ -45,8 +44,24 @@ class service_ordersController extends Controller
             return response()->json('a data de entrada deve ser informada no formato "AAAA-mm-dd HH:ii"');
         }
 
+        if ($serviceorders->exitDateTime == ""){
+            $serviceorders->exitDateTime = "0001-01-01 00:00";
+        }
+
         if (!date_create_from_format('Y-m-d H:i', $serviceorders->exitDateTime)){
             return response()->json('a data de saída deve ser informada no formato "AAAA-mm-dd HH:ii"');
+        }
+
+        if ($serviceorders->price == ""){
+            $serviceorders->price = '0.00';
+        }
+
+        if ( $serviceorders->vehiclePlate == ""){
+            return response()->json('a placa não pode estar em branco!');
+        }
+
+        if ( $serviceorders->userId == ""){
+            return response()->json('o usuario não pode estar em branco!');
         }
 
         $serviceorders->save();
@@ -80,21 +95,64 @@ class service_ordersController extends Controller
         $serviceorders->price = $request->price;
         $serviceorders->userId = $request->userId;
 
-        /**
-         *  verificação se é uma data valida, caso nao retorna uma mensagem de erro
-         */
         if (!date_create_from_format('Y-m-d H:i', $serviceorders->entryDateTime)){
             return response()->json('a data de entrada deve ser informada no formato "AAAA-mm-dd HH:ii"');
+        }
+
+        if ($serviceorders->exitDateTime == ""){
+            $serviceorders->exitDateTime = "0001-01-01 00:00";
         }
 
         if (!date_create_from_format('Y-m-d H:i', $serviceorders->exitDateTime)){
             return response()->json('a data de saída deve ser informada no formato "AAAA-mm-dd HH:ii"');
         }
 
+        if ($serviceorders->price == ""){
+            $serviceorders->price = '0.00';
+        }
+
+        if ( $serviceorders->vehiclePlate == ""){
+            return response()->json('a placa não pode estar em branco!');
+        }
+
+        if ( $serviceorders->userId == ""){
+            return response()->json('o usuario não pode estar em branco!');
+        }
+
         $serviceorders->save();
 
         return response()->json('ordem de serviço criada com sucesso!');
     }
+
+/**    public function dataValidation ($serviceorders){
+
+        if (!date_create_from_format('Y-m-d H:i', $serviceorders->entryDateTime)){
+            return response()->json('a data de entrada deve ser informada no formato "AAAA-mm-dd HH:ii"');
+        }
+
+        if ($serviceorders->exitDateTime == ""){
+            $serviceorders->exitDateTime = "0001-01-01 00:00";
+        }
+
+        if (!date_create_from_format('Y-m-d H:i', $serviceorders->exitDateTime)){
+            return response()->json('a data de saída deve ser informada no formato "AAAA-mm-dd HH:ii"');
+        }
+
+        if ($serviceorders->price == ""){
+            $serviceorders->price = '0.00';
+        }
+
+        if ( $serviceorders->vehiclePlate == ""){
+            return response()->json('a placa não pode estar em branco!');
+        }
+
+        if ( $serviceorders->useId == ""){
+            return response()->json('o usuario não pode estar em branco!');
+        }
+
+        return response()->json($serviceorders);
+
+    } */
 
     /**
      * @return \Illuminate\Http\JsonResponse
