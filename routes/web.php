@@ -22,9 +22,9 @@ $router->get('/', function () use ($router){
  */
 
 $router->get('/listall', 'service_ordersController@userIdToName');
-$router->get('/orders/{vehiclePlate}', 'service_ordersController@show');
+$router->get('/view/{vehiclePlate}', 'service_ordersController@show');
 $router->post('/new', 'service_ordersController@new');
-$router->post('/newuser', 'service_ordersController@create');
+$router->post('/newuser', 'service_ordersController@createuser');
 //$router->put('/orders/{id}', 'Service_ordersController@update');
 //$router->delete('/orders/{id}', 'Service_ordersController@delete');
 
