@@ -64,6 +64,12 @@ class service_ordersController extends Controller
             return response()->json('o usuario não pode estar em branco!');
         }
 
+        $validPlaca = (new service_ordersController())->placa_format($serviceorders->vehiclePlate);
+
+        if(!$validPlaca){
+            return 'informe um formato de placa válido. ex: lllnnnn ou lllnlnn.';
+        }
+
         $serviceorders->save();
 
         return response()->json('ordem de serviço criada com sucesso!');
@@ -119,6 +125,12 @@ class service_ordersController extends Controller
             return response()->json('o usuario não pode estar em branco!');
         }
 
+        $validPlaca = (new service_ordersController())->placa_format($serviceorders->vehiclePlate);
+
+        if(!$validPlaca){
+            return 'informe um formato de placa válido. ex: lllnnnn ou lllnlnn.';
+        }
+
         $serviceorders->save();
 
         return response()->json('ordem de serviço criada com sucesso!');
@@ -153,6 +165,12 @@ class service_ordersController extends Controller
         return response()->json($serviceorders);
 
     } */
+
+
+    public function placa_format($value)
+    {
+        return preg_match('/^[a-zA-Z]{3}\-?[0-9][0-9a-zA-Z][0-9]{2}$/', $value) > 0;
+    }
 
     /**
      * @return \Illuminate\Http\JsonResponse
